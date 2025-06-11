@@ -1,0 +1,23 @@
+# IDE settings
+.idea/
+
+# Virtual environment
+venv/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# MLflow run/artifact dirs
+mlruns/
+mlartifacts/
+temp_pyfunc_artifacts/
+
+# Data, models, outputs
+outputs/
+
+# Other generated files
+.DS_Store
+
+# Environment files
+.env
