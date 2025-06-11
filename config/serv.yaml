@@ -1,0 +1,18 @@
+# serv.yaml
+assets:
+  # ───────────────────────────────────────────────────────────────
+  # Apple Inc. — дві базові моделі, усереднюємо прогнози
+  - symbol: AAPL
+    base_models:
+      rf:   models:/rf@production      # Random-Forest (Prod)
+      lstm: models:/lr@stage      # linear regression (Staging)
+    strategy: mean                          # середнє значення прогнозів
+    threshold_mape: 0.07                    # спрацює алерт, якщо MAPE > 7 %
+
+  # ───────────────────────────────────────────────────────────────
+  # Tesla — одна модель, стратегію «single» обираємо автоматично
+  - symbol: TSLA
+    base_models:
+      xgb: models:/xgb@production
+    strategy: single                        # можна опустити, але лишаємо явність
+    threshold_mape: 0.10

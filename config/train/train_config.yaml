@@ -1,0 +1,118 @@
+## Hydra configuration for training pipeline
+#
+## Default config groups
+#defaults:
+#  - data: default
+#  - trainer: sklearn
+#  - _self_
+#
+## Global settings
+#tracking_uri: "http://localhost:5000"
+#registry_uri: "http://localhost:5000"
+#experiment: "default_experiment"
+#model_tag: "sklearn_model"
+#
+## ============================================================
+## file: conf/data/default.yaml
+## ============================================================
+## Configuration for data loader
+#csv: "data/raw/AAPL.csv"
+#ticker: "AAPL"
+#interval: "1d"
+#start: "2022-01-01"
+#end: null
+#period: "730d"
+#market_calendar: "NYSE"
+#tz: "UTC"
+#auto_download: true
+#auto_adjust: true
+#provider: "yfinance"
+#repository: "local"
+#
+## ============================================================
+## file: conf/trainer/sklearn.yaml
+## ============================================================
+## Configuration for SklearnTrainer
+#trainer: "sklearn"
+#hyperparameters:
+#  model_cls: "sklearn.ensemble.RandomForestRegressor"
+#  params:
+#    n_estimators: 100
+#feature_pipeline_cfg: null
+#seq_len: 30
+
+
+# ============================================================
+# file: conf/train/train_config.yaml
+# ============================================================
+# Top‑level Hydra config (defaults)
+defaults:
+  - data: default
+  - trainer: multi      # sklearn | multi | lstm
+  - strategy: mean        # none | mean | median | weighted
+  - _self_
+
+# Global MLflow & experiment metadata
+tracking_uri: "http://127.0.0.1:5000"
+registry_uri: "http://127.0.0.1:5000"
+experiment: "investment_analysis_demo_3"
+model_tag: "demo_model"
+
+# Validation settings (used by TrainModelManager)
+validation:
+  method: holdout          # holdout only for now (manager handles)
+  val_size_days: 60
+
+
+#
+## ============================================================
+## file: conf/data/default.yaml
+## ============================================================
+#csv: "data/raw/AAPL.csv"   # put demo csv here
+#interval: "1d"
+#ticker: "AAPL"
+#start: null
+#end: null
+#period: "730d"
+#market_calendar: "NYSE"
+#tz: "UTC"
+#auto_download: true
+#auto_adjust: true
+#provider: "yfinance"
+#repository: "local"
+#
+## ============================================================
+## file: conf/trainer/sklearn.yaml
+## ============================================================
+#trainer: sklearn
+#hyperparameters:
+#  model_cls: sklearn.ensemble.RandomForestRegressor
+#  params: {n_estimators: 50, random_state: 42}
+#feature_pipeline_cfg: null
+#
+## ============================================================
+## file: conf/trainer/multi.yaml
+## ============================================================
+#trainer: multi
+#model_tag: ensemble_demo
+#models:
+#  lr:
+#    class: sklearn.linear_model.LinearRegression
+#    pipeline_cfg: null
+#    params: {}
+#  rf:
+#    class: sklearn.ensemble.RandomForestRegressor
+#    pipeline_cfg: null
+#    params: {n_estimators: 10, random_state: 0}
+#
+## ============================================================
+## file: conf/strategy/none.yaml
+## ============================================================
+#strategy:
+#  kind: none
+#
+## ============================================================
+## file: conf/strategy/mean.yaml
+## ============================================================
+#strategy:
+#  kind: mean

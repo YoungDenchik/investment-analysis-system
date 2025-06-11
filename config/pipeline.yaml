@@ -1,0 +1,64 @@
+# pipelines/config.yaml
+# ------------------------------------------------------------
+# ЄДИНА конфігурація для всіх моделей.
+# Кожен блок виконується, якщо:
+#   • у нього немає ключа `when`,        або
+#   • поточний model_tag входить до списку `when`.
+# ------------------------------------------------------------
+steps:
+
+  # ---------- базовий препроцесинг (усім потрібен) ----------
+  - name: core
+    params:
+      outlier_k: 1.5        # IQR-winsorize множник
+      calendar: NYSE
+      tz: UTC
+
+  # ---------- технічні індикатори ---------------------------
+  - name: tech_indicators
+    when:   [rf, xgb, lstm]     # ARIMA не потребує
+    params:
+      indicators:
+        SMA: 14
+        ATR: 14
+        OBV: null
+        HLC3: null
+        BBANDS: 20
+        RSI: 14
+
+
+  # ---------- ковзні статистики ----------------------------
+  - name: rolling_stats
+    when:   [rf, xgb, lstm]
+    params:
+      windows: [5, 20, 60]
+      stats:   [mean, std, vol, zscore]
+
+  # ---------- лаг-фічі (деревам корисно) -------------------
+  - name: lag_features
+    when:   [rf, xgb]
+    params:
+      lags: [1, 5]
+
+  # ---------- ГІЛКА (підставляється автоматично) -----------
+  # (буде: arima_branch, rf_branch, xgb_branch, lstm_branch)
+  - name: branch          # <-- обов’язково лишаємо
+
+  # спеціальні параметри саме для arima_branch
+  - name: branch          # дублюємо блок, але з when та params
+    when:   [arima]
+    params:
+      diff_order: 1
+      use_log: true       # log-diff == log-returns
+
+#  # ---------- скейлінг під градієнтну мережу ---------------
+#  - name: scaler
+#    when:   [lstm]        # лише LSTM (та, напр., SVR)
+#    params:
+#      feature_range: [0, 1]
+
+#  # ---------- PCA → прискорити XGB / RF --------------------
+#  - name: pca
+#    when:   [xgb, rf]
+#    params:
+#      n_components: 35

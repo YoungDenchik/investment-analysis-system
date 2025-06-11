@@ -1,0 +1,14 @@
+
+# ============================================================
+# file: conf/train/trainer/sklearn.yaml
+# ============================================================
+trainer: sklearn
+hyperparameters:
+  model_cls: sklearn.ensemble.RandomForestRegressor
+  params: {n_estimators: 50, random_state: 42}
+feature_pipeline_cfg: D:\investment-analysis-system\config\pipeline.yaml
+model_tag: rf
+
+
+
+

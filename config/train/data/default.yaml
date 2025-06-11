@@ -1,0 +1,17 @@
+
+# ============================================================
+# file: conf/train/data/default.yaml
+# ============================================================
+#csv: "data/raw/AAPL.csv"   # put demo csv here
+interval: "1d"
+ticker: "AAPL"
+start: null
+end: null
+period: "730d"
+market_calendar: "NYSE"
+tz: "UTC"
+auto_download: true
+auto_adjust: false
+provider: "yfinance"
+repository: "local"
+date_time_index: true

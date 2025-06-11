@@ -1,0 +1,18 @@
+
+# ============================================================
+# file: conf/train/trainer/multi.yaml
+# ============================================================
+trainer: multi
+model_tag: ensemble_demo
+models:
+  lr:
+    class: sklearn.linear_model.LinearRegression
+    pipeline_cfg: null
+    params: {}
+  rf:
+    class: sklearn.ensemble.RandomForestRegressor
+    pipeline_cfg: D:\investment-analysis-system\config\pipeline.yaml
+    params: {n_estimators: 10, random_state: 0}
+
+
+
