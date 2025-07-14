@@ -6,7 +6,7 @@ from data.persistence.repository.instrument_repository import InstrumentReposito
 from data.providers.yfinance_market_provider import YFinanceMarketProvider
 from services.price_data.price_data_service import PriceDataService
 from services.forecasts.forecast_service import ForecastService
-from services.forecasts.model_manager_final import ModelManager
+from services.forecasts.model_manager import ModelManager
 from config.config import CFG_PROD_FILE
 
 class Container(containers.DeclarativeContainer):

@@ -12,6 +12,7 @@ POSTGRES_DB = os.getenv('POSTGRES_DB', 'market_data')
 POSTGRES_USER = os.getenv('POSTGRES_USER', 'postgres')
 POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD', 'secret')
 CFG_PROD_FILE = os.getenv('CFG_PROD_FILE')
+MLFLOW_TRACKING_URI = os.getenv('MLFLOW_TRACKING_URI')
 
 # REDIS_HOST = os.getenv('REDIS_HOST', 'localhost')
 # REDIS_PORT = int(os.getenv('REDIS_PORT', 6379))

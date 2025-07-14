@@ -4,10 +4,10 @@ assets:
   # Apple Inc. — дві базові моделі, усереднюємо прогнози
   - symbol: AAPL
     base_models:
-      rf:   models:/rf@production      # Random-Forest (Prod)
-      lstm: models:/lr@stage      # linear regression (Staging)
+      rf:   models:/rf@Production      # Random-Forest (Prod)
+      lr: models:/lr@Production      # linear regression (Prod)
     strategy: mean                          # середнє значення прогнозів
-    threshold_mape: 0.07                    # спрацює алерт, якщо MAPE > 7 %
+#    threshold_mape: 0.07                    # спрацює алерт, якщо MAPE > 7 %
 
   # ───────────────────────────────────────────────────────────────
   # Tesla — одна модель, стратегію «single» обираємо автоматично

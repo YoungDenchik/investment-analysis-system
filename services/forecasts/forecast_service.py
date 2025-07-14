@@ -4,8 +4,8 @@ import pandas as pd
 from typing import Any
 
 from services.price_data.price_data_service import PriceDataService
-from services.forecasts.model_manager_final import ModelManager
-from datetime import datetime
+from services.forecasts.model_manager import ModelManager
+from datetime import datetime, timedelta
 
 logger = logging.getLogger(__name__)
 
@@ -15,10 +15,10 @@ class ForecastService:
     """
 
     def __init__(self,
-                 price_data: PriceDataService,
+                 price_data_service: PriceDataService,
                  model_manager: ModelManager
                  ):
-        self.price_data = price_data
+        self.price_data = price_data_service
         self.model_manager = model_manager
 
     def generate_forecast(self,
@@ -27,7 +27,10 @@ class ForecastService:
                           forecast_date: str,
                           **kwargs: Any) -> pd.Series:
 
-        dt = datetime.strptime(forecast_date, "%Y-%m-%d %H:%M:%S")
-        df = self.price_data.get_prices(ticker=ticker, interval=interval, end=dt, period='100d')
+        dt = datetime.strptime(forecast_date, "%Y-%m-%d")
+        start_date = dt - timedelta(days=100)
+
+        df = self.price_data.get_prices(ticker=ticker, interval=interval, start= start_date, end=dt)
+
         predictions = self.model_manager.predict(ticker, df)
         return predictions

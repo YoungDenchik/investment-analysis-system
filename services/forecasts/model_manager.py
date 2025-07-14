@@ -10,6 +10,7 @@ from typing import Any, Callable, Dict, List, Protocol, Sequence
 import numpy as np
 import pandas as pd
 from pydantic import BaseModel, Field, ValidationError, field_validator
+from config.config import MLFLOW_TRACKING_URI
 
 # ---------------- soft dependencies ----------------
 try:
@@ -67,7 +68,7 @@ class AssetCfg(BaseModel):
     base_models: Dict[str, str]  # tag → MLflow URI / alias
     strategy: str = Field("mean", description="Aggregation strategy name")
     meta_model: str | None = Field(None, description="Meta‑model URI (stacking)")
-    threshold_mape: float = Field(0.1, gt=0.0, description="Alert threshold")
+    # threshold_mape: float = Field(0.1, gt=0.0, description="Alert threshold")
 
     @field_validator("symbol", mode="before")
     @classmethod
@@ -128,6 +129,7 @@ class MlflowModel(Model):
 # ---------------------------------------------------------------------------
 class DefaultLoader(Loader):
     def __init__(self, ttl_sec: int = 300):
+        mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
         self._client = MlflowClient()
         self._model_cache: TTLCache[str, Model] = TTLCache(maxsize=128, ttl=ttl_sec)
         self._lock = threading.RLock()
@@ -268,7 +270,7 @@ class ModelManager:
     # ---------------- internals ----------------
     def _parse_cfg(self, path: str | Path) -> Dict[str, AssetCfg]:
         import yaml  # local import to keep global namespace clean
-        raw = Path(path).expanduser().read_text()
+        raw = Path(path).expanduser().read_text(encoding="utf-8")
         try:
             cfg_doc = yaml.safe_load(raw)
         except Exception as exc:

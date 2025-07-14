@@ -11,13 +11,14 @@ from di.container import Container
 router = APIRouter()
 
 @router.post("/", response_model=ForecastResponse)
+@inject
 def generate_forecast(request: ForecastRequest,
                       service: ForecastService = Depends(
                           Provide[Container.forecast_service]
                       ),
 ):
     """
-    Generates a forecast for the given ticker and date range.
+    Generates a forecast for the given ticker and date.
     # """
     predictions = service.generate_forecast(
         ticker=request.ticker,

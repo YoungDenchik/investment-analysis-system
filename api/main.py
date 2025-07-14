@@ -21,6 +21,7 @@ def create_app() -> FastAPI:
     # Ініціалізуємо контейнер залежностей
     container = Container()
 
+    container.wire(packages=["api.routers"])
 
 
     # Створюємо FastAPI-додаток і прикріплюємо контейнер для доступу з роутерів

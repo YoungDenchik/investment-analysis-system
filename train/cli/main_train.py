@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+import sys
+import os
+
+# Додаємо кореневу директорію до sys.path, щоб Python міг знаходити модулі.
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
+
 import hydra
 import mlflow
 from omegaconf import DictConfig
